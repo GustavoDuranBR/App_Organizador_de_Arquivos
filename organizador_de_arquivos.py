@@ -28,8 +28,8 @@ class FileOrganizerApp:
         file_type_label.pack(pady=2)
 
         # Lista de opções para a caixa de seleção
-        file_type_options = ["", "docx", "dwg", "exe", "html", "jpg", "json",
-                             "mp3", "mp4", "pdf", "png", "txt", "xlsx", "xml", "zip"]
+        file_type_options = ["", "avi","docx", "dwg", "exe", "html", "jpg", "json",
+                             "mp3", "mp4", "mp5", "pdf", "png", "txt", "xlsx", "xml", "zip"]
 
         # Variável para armazenar a opção selecionada
         file_type_combobox = ttk.Combobox(self.root, textvariable=self.selected_file_type, values=file_type_options)
@@ -161,4 +161,3 @@ if __name__ == "__main__":
     root = tk.Tk()
     app = FileOrganizerApp(root)
     root.mainloop()
-
