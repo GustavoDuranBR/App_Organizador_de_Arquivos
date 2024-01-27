@@ -6,13 +6,30 @@ from PIL import Image, ImageTk
 import shutil
 from progress_bar_window import ProgressBarWindow
 from ttkthemes import ThemedTk
+from datetime import datetime
 
 
 class FileOrganizerAppWithThread:
     def __init__(self, tk_root: tk.Tk):
         self.root = tk_root
         self.root.title("Organizer")
-        self.root.geometry("600x700")  # Ajuste conforme necessário
+        self.root.geometry("600x700")
+
+        # Inicialize a lista de ações
+        self.actions_history = []
+
+        # Inicialize a variável action_on_close como None no __init__
+        self.action_on_close = None
+        self.files_to_organize_on_close = None
+        self.source_folder_on_close = None
+        self.dest_folder_on_close = None
+
+        # Associar a função ao evento de fechamento
+        tk_root.protocol("WM_DELETE_WINDOW", self.on_close)
+
+        # Criar a pasta padrão em Meus Documentos
+        self.documents_folder = os.path.join(os.path.expanduser("~"), "Documents", "Organizer")
+        os.makedirs(self.documents_folder, exist_ok=True)
 
         # Carregar a imagem do ícone
         icon_path = "icone.ico"
@@ -193,6 +210,7 @@ class FileOrganizerAppWithThread:
 
         Thread(target=self.organize_files_thread).start()
 
+
     def organize_files_thread(self):
         file_type = self.selected_file_type.get()
         name_part = self.name_part_var.get()
@@ -253,6 +271,40 @@ class FileOrganizerAppWithThread:
             if self.progress_window:
                 self.progress_window.destroy_window()
             self.organizing_in_progress = False
+
+        # Adicione a ação à lista de histórico
+        self.actions_history.append({
+            "action": action,
+            "files_to_organize": files_to_organize,
+            "source_folder": source_folder,
+            "dest_folder": dest_folder,
+            "timestamp": datetime.now()
+        })
+
+    def on_close(self):
+        # Iterar sobre a lista de ações e gerar um arquivo TXT para cada uma
+        for action_info in self.actions_history:
+            date_str = action_info["timestamp"].strftime("%Y-%m-%d_%H-%M-%S")
+            action = action_info["action"].lower()
+
+            organized_files_txt_path = os.path.join(self.documents_folder,
+                                                    f"organized_files_{date_str}_{action}.txt")
+
+            try:
+                with open(organized_files_txt_path, "w") as txt_file:
+                    for filename in action_info["files_to_organize"]:
+                        source_path = os.path.join(action_info["source_folder"], filename)
+                        dest_path = os.path.join(action_info["dest_folder"], filename)
+                        txt_file.write(f"Arquivo: {filename}\n"
+                                       f"Origem: {source_path}\n"
+                                       f"Destino: {dest_path}\n\n")
+            except Exception as e:
+                tk.messagebox.showerror("Erro", f"Erro ao criar o arquivo de texto: {str(e)}")
+            else:
+                tk.messagebox.showinfo("Concluído", f"Arquivo de texto criado em:\n{organized_files_txt_path}")
+
+        # Fechar o aplicativo
+        self.root.destroy()
 
 
 if __name__ == "__main__":
