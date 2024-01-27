@@ -270,10 +270,20 @@ class FileOrganizerAppWithThread:
                 source_path = os.path.join(source_folder, filename)
                 dest_path = os.path.join(dest_folder, filename)
 
-                if action == "Copy":
-                    shutil.copy2(source_path, dest_path)
-                elif action == "Move":
-                    shutil.move(source_path, dest_path)
+                if os.path.isdir(source_path):
+                    # Se for um diretório, use copytree
+                    try:
+                        shutil.copytree(source_path, dest_path)
+                    except Exception as e:
+                        tk.messagebox.showerror("Erro", f"Erro ao copiar o diretório: {str(e)}")
+                else:
+                    # Se for um arquivo, use copy2
+                    try:
+                        shutil.copy2(source_path, dest_path)
+                    except PermissionError as pe:
+                        tk.messagebox.showerror("Erro de Permissão", f"Erro de permissão: {str(pe)}")
+                    except Exception as e:
+                        tk.messagebox.showerror("Erro", f"Erro ao copiar o arquivo: {str(e)}")
 
                 self.progress_window.update_progress(i)
 
