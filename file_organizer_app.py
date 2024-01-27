@@ -2,6 +2,7 @@ import os
 import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
 from threading import Thread
+import importlib.resources
 from PIL import Image, ImageTk
 import shutil
 from progress_bar_window import ProgressBarWindow
@@ -32,13 +33,13 @@ class FileOrganizerAppWithThread:
         os.makedirs(self.documents_folder, exist_ok=True)
 
         # Carregar a imagem do ícone
-        icon_path = "icone.ico"
+        icon_path = "D:\\PYTHON_PROJETOS\\App_Organizador_de_Arquivos\\icone.ico"
         if os.path.exists(icon_path):
             icon_image = Image.open(icon_path)
             icon_photo = ImageTk.PhotoImage(icon_image)
             self.root.iconphoto(False, icon_photo)
 
-        self.QR_CODE_PATH = "NuBank2.png"
+        self.QR_CODE_PATH = "D:\\PYTHON_PROJETOS\\App_Organizador_de_Arquivos\\NuBank2.png"
         self.selected_file_type = tk.StringVar()
         self.name_part_var = tk.StringVar()
         self.source_folder_var = tk.StringVar()
@@ -65,7 +66,7 @@ class FileOrganizerAppWithThread:
         header_frame.pack(pady=6)
 
         # Carregar a imagem
-        image_path = os.path.join(os.getcwd(), 'imagem_software2.jpg')
+        image_path = os.path.join(os.getcwd(), 'D:\\PYTHON_PROJETOS\\App_Organizador_de_Arquivos\\imagem_software2.jpg')
         header_image = Image.open(image_path)
         header_image = ImageTk.PhotoImage(header_image)
 
