@@ -32,13 +32,6 @@ class FileOrganizerAppWithThread:
         self.documents_folder = os.path.join(os.path.expanduser("~"), "Documents", "Organizer")
         os.makedirs(self.documents_folder, exist_ok=True)
 
-        # Carregar a imagem do ícone
-        icon_path = "D:\\PYTHON_PROJETOS\\App_Organizador_de_Arquivos\\icone.ico"
-        if os.path.exists(icon_path):
-            icon_image = Image.open(icon_path)
-            icon_photo = ImageTk.PhotoImage(icon_image)
-            self.root.iconphoto(False, icon_photo)
-
         self.QR_CODE_PATH = "D:\\PYTHON_PROJETOS\\App_Organizador_de_Arquivos\\NuBank2.png"
         self.selected_file_type = tk.StringVar()
         self.name_part_var = tk.StringVar()
@@ -52,6 +45,23 @@ class FileOrganizerAppWithThread:
         self.progress_window = None
 
         self.create_widgets()
+
+    def load_icon(self):
+        # Corrigir a inicialização da variável icon_path
+        icon_path = "D:\\PYTHON_PROJETOS\\App_Organizador_de_Arquivos\\icone.ico"
+
+        # Carregar a imagem do ícone
+        try:
+            if os.path.exists(icon_path):
+                with open(icon_path, "rb") as icon_file:
+                    icon_image = Image.open(icon_file)
+                    icon_image = icon_image.resize((32, 32), Image.LANCZOS)
+                    FileOrganizerAppWithThread.icon_photo = ImageTk.PhotoImage(icon_image)
+            else:
+                tk.messagebox.showwarning("Aviso",
+                                          "Ícone não encontrado. Certifique-se de que o caminho está correto.")
+        except Exception as e:
+            tk.messagebox.showerror("Erro", f"Erro ao carregar o ícone: {str(e)}")
 
     def create_widgets(self):
         self.create_header()
