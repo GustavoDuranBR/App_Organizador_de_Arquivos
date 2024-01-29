@@ -1,8 +1,7 @@
 import os
-import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
-from threading import Thread
-import importlib.resources
+import tkinter as tk
+from themed_file_organizer_app import *
 from PIL import Image, ImageTk
 import shutil
 from progress_bar_window import ProgressBarWindow
@@ -10,7 +9,7 @@ from ttkthemes import ThemedTk
 from datetime import datetime
 
 
-class FileOrganizerAppWithThread:
+class FileOrganizerApp:
     def __init__(self, tk_root: tk.Tk):
         self.root = tk_root
         self.root.title("Organizer")
@@ -46,23 +45,6 @@ class FileOrganizerAppWithThread:
 
         self.create_widgets()
 
-    def load_icon(self):
-        # Corrigir a inicialização da variável icon_path
-        icon_path = "D:\\PYTHON_PROJETOS\\App_Organizador_de_Arquivos\\icone.ico"
-
-        # Carregar a imagem do ícone
-        try:
-            if os.path.exists(icon_path):
-                with open(icon_path, "rb") as icon_file:
-                    icon_image = Image.open(icon_file)
-                    icon_image = icon_image.resize((32, 32), Image.LANCZOS)
-                    FileOrganizerAppWithThread.icon_photo = ImageTk.PhotoImage(icon_image)
-            else:
-                tk.messagebox.showwarning("Aviso",
-                                          "Ícone não encontrado. Certifique-se de que o caminho está correto.")
-        except Exception as e:
-            tk.messagebox.showerror("Erro", f"Erro ao carregar o ícone: {str(e)}")
-
     def create_widgets(self):
         self.create_header()
         self.create_file_options()
@@ -73,7 +55,7 @@ class FileOrganizerAppWithThread:
 
     def create_header(self):
         header_frame = ttk.Frame(self.root)
-        header_frame.pack(pady=6)
+        header_frame.pack(pady=0)
 
         # Carregar a imagem
         image_path = os.path.join(os.getcwd(), 'D:\\PYTHON_PROJETOS\\App_Organizador_de_Arquivos\\imagem_software2.jpg')
@@ -87,7 +69,7 @@ class FileOrganizerAppWithThread:
 
     def create_file_options(self):
         frame = ttk.LabelFrame(self.root, text="Opções de Arquivo", padding=(8, 3))
-        frame.pack(pady=8, padx=8, fill="both", expand=True)
+        frame.pack(pady=0, padx=10, fill="both", expand=True)
 
         self.create_combobox(frame, "Ação:", ["Copy", "Move"], self.selected_action)
         self.create_combobox(frame, "Tipo de Arquivo:", ["", "avi", "docx", "dwg", "exe", "jpg", "json",
@@ -96,65 +78,77 @@ class FileOrganizerAppWithThread:
         self.create_entry(frame, "Parte do Nome:", self.name_part_var)
 
     def create_folder_options(self):
-        frame = ttk.LabelFrame(self.root, text="Opções de Pasta", padding=(8, 3))
-        frame.pack(pady=8, padx=8, fill="both", expand=True)
+        frame = ttk.LabelFrame(self.root, text="Opções de Pasta", padding=(10, 10))
+        frame.pack(pady=8, padx=10, fill="both", expand=True)
 
-        self.create_folder_entry(frame, "Pasta de Origem:", self.source_folder_var, self.browse_source_folder)
+        self.create_folder_entry(frame, "Pasta de Origem:", self.source_folder_var,
+                                 self.browse_source_folder)
         self.create_folder_entry(frame, "Pasta de Destino:", self.destination_folder_var,
                                  self.browse_destination_folder)
-
-        # Reduza o espaço entre o LabelFrame de doação e o rodapé
-        frame.pack_configure(pady=1)
+        frame.pack_configure(pady=0)
 
     def create_action_button(self):
-        organize_button = tk.Button(self.root, text="Organizar", command=self.organize_files,
-                                    font=("Helvetica", 12, "bold"))
-        organize_button.pack(pady=1)
+        frame = ttk.LabelFrame(self.root, padding=(0, 0))
+        frame.pack(pady=0, padx=10, fill="both", expand=True)
+
+        # Use ttk.Button dentro do frame
+        organize_button = ttk.Button(frame, text="Organizar", command=self.organize_files,
+                                     style="TButton",  # Utiliza o estilo padrão do tema
+                                     cursor="hand2",  # Cursor de mão ao passar sobre o botão
+                                     )
+
+        # Adicione um estilo para bordas arredondadas
+        self.root.style = ttk.Style()
+        self.root.style.configure("TButton", padding=0,
+                                  relief="flat", borderwidth=0,
+                                  font=("Helvetica", 12, "bold"))
+        organize_button.pack(pady=0)
+        frame.pack_configure(pady=0)
 
     def create_donation_section(self):
-        frame = ttk.LabelFrame(self.root, text="Doação", padding=(4, 4))
-        frame.pack(pady=8, padx=8, fill="both", expand=True)  # Ajuste conforme necessário
+        frame = ttk.LabelFrame(self.root, text="Doação", padding=(10, 10))
+        frame.pack(pady=0, padx=10, fill="both", expand=True)  # Ajuste conforme necessário
 
         self.create_qr_code(frame)
 
         # Reduza o espaço entre o LabelFrame de doação e o rodapé
-        frame.pack_configure(pady=1)
+        frame.pack_configure(pady=0)
 
     def create_footer(self):
         footer_label = tk.Label(self.root, text="Developed by: Gustavo Duran - Version: 2.0", font=("Helvetica", 11))
-        footer_label.pack(side="bottom", pady=4)
+        footer_label.pack(side="bottom", pady=0)
 
     def create_combobox(self, parent, label_text, values, variable):
         label = tk.Label(parent, text=label_text, font=("Helvetica", 11))
-        label.grid(row=len(parent.grid_slaves()), column=10, pady=5, padx=5, sticky="w")
+        label.grid(row=len(parent.grid_slaves()), column=10, pady=0, padx=5, sticky="w")
 
         combobox = ttk.Combobox(parent, textvariable=variable, values=values)
-        combobox.grid(row=len(parent.grid_slaves()) - 1, column=11, pady=5, padx=5, sticky="w")
+        combobox.grid(row=len(parent.grid_slaves()) - 1, column=11, pady=4, padx=5, sticky="w")
 
     def create_entry(self, parent, label_text, variable):
         label = tk.Label(parent, text=label_text, font=("Helvetica", 11))
-        label.grid(row=len(parent.grid_slaves()), column=10, pady=5, padx=5, sticky="w")
+        label.grid(row=len(parent.grid_slaves()), column=10, pady=0, padx=5, sticky="w")
 
         entry = tk.Entry(parent, textvariable=variable)
-        entry.grid(row=len(parent.grid_slaves()) - 1, column=11, pady=5, padx=5, sticky="w")
+        entry.grid(row=len(parent.grid_slaves()) - 1, column=11, pady=0, padx=5, sticky="w")
 
     def create_folder_entry(self, parent, label_text, variable, browse_command):
         label = tk.Label(parent, text=label_text, font=("Helvetica", 11))
-        label.grid(row=len(parent.grid_slaves()), column=10, pady=5, padx=5, sticky="w")
+        label.grid(row=len(parent.grid_slaves()), column=10, pady=0, padx=5, sticky="w")
 
         entry = tk.Entry(parent, textvariable=variable)
-        entry.grid(row=len(parent.grid_slaves()) - 1, column=11, pady=5, padx=5, sticky="w")
+        entry.grid(row=len(parent.grid_slaves()) - 1, column=11, pady=1, padx=5, sticky="w")
 
         button = tk.Button(parent, text="Selecionar Pasta", command=browse_command)
-        button.grid(row=len(parent.grid_slaves()) - 1, column=12, pady=5, padx=5, sticky="w")
+        button.grid(row=len(parent.grid_slaves()) - 1, column=12, pady=1, padx=5, sticky="w")
 
     def create_qr_code(self, parent):
         donation_label = tk.Label(parent, text="Doações são bem-vindas!", font=("Helvetica", 11))
-        donation_label.grid(row=0, column=11, pady=5)
+        donation_label.grid(row=0, column=11, pady=0)
 
         qr_code_canvas = tk.Canvas(parent, width=105, height=105)
         qr_code_canvas.create_image(0, 0, anchor=tk.NW, image=self.qr_code_photo)
-        qr_code_canvas.grid(row=1, column=10, pady=1)
+        qr_code_canvas.grid(row=1, column=50, pady=0)
 
     def resize_qr_code(self, qr_code_path: str) -> tk.PhotoImage:
         max_width = 110
@@ -183,46 +177,6 @@ class FileOrganizerAppWithThread:
             tk.messagebox.showwarning("Aviso", "A organização já está em andamento.")
             return
 
-        file_type = self.selected_file_type.get()
-        name_part = self.name_part_var.get()
-        source_folder = self.source_folder_var.get()
-        dest_folder = self.destination_folder_var.get()
-        self.selected_action.get()
-
-        if not file_type and not name_part:
-            tk.messagebox.showerror("Erro", "Especifique pelo menos o tipo de arquivo ou a parte do nome.")
-            return
-
-        if not file_type:
-            dest_folder = os.path.join(dest_folder, f"Organizado_{name_part}")
-            os.makedirs(dest_folder, exist_ok=True)
-            files_to_organize = [filename for filename in os.listdir(source_folder) if name_part in filename]
-
-            if not files_to_organize:
-                tk.messagebox.showwarning("Aviso",
-                                          f"Nenhum arquivo encontrado com a parte do nome '{name_part}'. Verifique o "
-                                          f"nome e tente novamente.")
-                return
-        else:
-            if not name_part and file_type != "Organizado":
-                tk.messagebox.showerror("Erro", "Preencha o campo 'Parte do Nome'.")
-                return
-
-            dest_folder = os.path.join(dest_folder, f"{name_part}_{file_type}")
-            os.makedirs(dest_folder, exist_ok=True)
-            files_to_organize = [filename for filename in os.listdir(source_folder) if
-                                 file_type in filename and name_part in filename]
-
-            if not files_to_organize:
-                tk.messagebox.showwarning("Aviso",
-                                          f"Nenhum arquivo encontrado com a parte do nome '{name_part}' e tipo de "
-                                          f"arquivo '{file_type}'. Verifique os campos e tente novamente.")
-                return
-
-        Thread(target=self.organize_files_thread).start()
-
-
-    def organize_files_thread(self):
         file_type = self.selected_file_type.get()
         name_part = self.name_part_var.get()
         source_folder = self.source_folder_var.get()
@@ -308,8 +262,9 @@ class FileOrganizerAppWithThread:
             date_str = action_info["timestamp"].strftime("%Y-%m-%d_%H-%M-%S")
             action = action_info["action"].lower()
 
-            organized_files_txt_path = os.path.join(self.documents_folder,
-                                                    f"organized_files_{date_str}_{action}.txt")
+            dest_folder = action_info["dest_folder"]  # Use a pasta de destino
+
+            organized_files_txt_path = os.path.join(dest_folder, f"organized_files_{date_str}_{action}.txt")
 
             try:
                 with open(organized_files_txt_path, "w") as txt_file:
@@ -330,5 +285,5 @@ class FileOrganizerAppWithThread:
 
 if __name__ == "__main__":
     root = ThemedTk(theme="blue")
-    app = FileOrganizerAppWithThread(root)
+    app = FileOrganizerApp(root)
     root.mainloop()

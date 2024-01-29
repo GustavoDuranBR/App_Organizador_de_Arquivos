@@ -2,22 +2,25 @@ import tkinter as tk
 from tkinter import ttk
 
 
-class ProgressBarWindow(tk.Toplevel):
-    def __init__(self, master, total_files):
-        super().__init__(master)
-        self.title("Progresso")
-        self.geometry("300x80")
-
-        self.progress_var = tk.DoubleVar()
-        self.progressbar = ttk.Progressbar(self, variable=self.progress_var, length=280, mode="determinate")
-        self.progressbar.pack(pady=10)
-
+class ProgressBarWindow:
+    def __init__(self, parent, total_files):
+        self.parent = parent
         self.total_files = total_files
-        self.progress_step = 100.0 / total_files
+
+        self.progress_window = tk.Toplevel(parent)
+        self.progress_window.title("Progresso")
+        self.progress_window.geometry("300x80")
+
+        self.label = ttk.Label(self.progress_window, text="Organizando arquivos...")
+        self.label.pack(pady=5)
+
+        self.progress_bar = ttk.Progressbar(self.progress_window, orient="horizontal", length=250, mode="determinate")
+        self.progress_bar.pack(pady=5)
 
     def update_progress(self, current_file):
-        self.progress_var.set(current_file * self.progress_step)
-        self.update_idletasks()
+        progress_percentage = (current_file / self.total_files) * 100
+        self.progress_bar["value"] = progress_percentage
+        self.parent.update_idletasks()
 
     def destroy_window(self):
-        self.destroy()
+        self.progress_window.destroy()
