@@ -39,11 +39,4 @@ Sinta-se à vontade para contribuir! Veja nosso [guia de contribuição](CONTRIB
 
 ## Problemas e Melhorias
 
-Encontrou um bug ou quer sugerir uma melhoria? Por favor, [abra uma issue](https://github.com/seu-username/seu-repositorio/issues).
-
-## Licença
-
-Este projeto é licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICENSE) para mais detalhes.
-```
-
-Lembre-se de personalizar as seções conforme necessário para refletir as características específicas e as necessidades do seu projeto. Certifique-se de incluir links, instruções de instalação claras e informações sobre como os outros podem contribuir para o projeto.
+Encontrou um bug ou quer sugerir uma melhoria? Por favor, [abra uma issue](https://github.com/GustavoDuranBR/seu-repositorio/issues).
