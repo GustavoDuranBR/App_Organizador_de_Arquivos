@@ -16,6 +16,34 @@ O File Organizer App é uma aplicação de linha de comando para organizar arqui
 - Dependências adicionais (listadas no arquivo `requirements.txt`)
 
 ```bash
-pip install -r requirements.txtUsopython file_organizer_app.py
+pip install -r requirements.txt
+```
 
- Opções de Linha de Comando:-h, --help: Exibe informações de ajuda....ConfiguraçãoAntes de executar o aplicativo, ajuste as configurações no arquivo config.ini conforme necessário.ContribuindoSinta-se à vontade para contribuir! Veja nosso guia de contribuição para saber como.Problemas e MelhoriasEncontrou um bug ou quer sugerir uma melhoria? Por favor, abra uma issue.LicençaEste projeto é licenciado sob a Licença MIT - veja o arquivo LICENSE para mais detalhes.
+## Uso
+
+```bash
+python file_organizer_app.py
+```
+
+**Opções de Linha de Comando:**
+- `-h, --help`: Exibe informações de ajuda.
+- ...
+
+## Configuração
+
+Antes de executar o aplicativo, ajuste as configurações no arquivo `config.ini` conforme necessário.
+
+## Contribuindo
+
+Sinta-se à vontade para contribuir! Veja nosso [guia de contribuição](CONTRIBUTING.md) para saber como.
+
+## Problemas e Melhorias
+
+Encontrou um bug ou quer sugerir uma melhoria? Por favor, [abra uma issue](https://github.com/seu-username/seu-repositorio/issues).
+
+## Licença
+
+Este projeto é licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+```
+
+Lembre-se de personalizar as seções conforme necessário para refletir as características específicas e as necessidades do seu projeto. Certifique-se de incluir links, instruções de instalação claras e informações sobre como os outros podem contribuir para o projeto.
