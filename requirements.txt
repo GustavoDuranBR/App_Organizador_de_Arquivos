@@ -1,6 +1,6 @@
+#pip freeze
 Pillow==8.3.2
-
-ttkthemes~=3.2.2
-pip~=23.3.2
-wheel~=0.42.0
-setuptools~=69.0.3
+pyoxidizer==0.24.0
+pystray==0.19.5
+six==1.16.0
+ttkthemes==3.2.2
