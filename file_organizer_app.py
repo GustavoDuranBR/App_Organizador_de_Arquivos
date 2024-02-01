@@ -1,4 +1,5 @@
 import os
+import sys
 from tkinter import ttk, filedialog, messagebox
 import tkinter as tk
 from PIL import Image, ImageTk
@@ -30,7 +31,12 @@ class FileOrganizerApp:
         self.documents_folder = os.path.join(os.path.expanduser("~"), "Documents", "Organizer")
         os.makedirs(self.documents_folder, exist_ok=True)
 
-        self.QR_CODE_PATH = "D:\\PYTHON_PROJETOS\\App_Organizador_de_Arquivos\\dist\\NuBank.png"
+        if getattr(sys, 'frozen', False):
+            # Se o script estiver congelado (executando como executável)
+            self.QR_CODE_PATH = os.path.join(os.path.dirname(sys.executable), 'NuBank.png')
+        else:
+            # Se o script estiver sendo executado diretamente
+            self.QR_CODE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'dist', 'NuBank.png')
         self.selected_file_type = tk.StringVar()
         self.name_part_var = tk.StringVar()
         self.source_folder_var = tk.StringVar()
@@ -57,8 +63,12 @@ class FileOrganizerApp:
         header_frame.pack(pady=0)
 
         # Carregar a imagem
-        image_path = os.path.join(os.getcwd(), 'D:\\PYTHON_PROJETOS\\App_Organizador_de_Arquivos\\dist'
-                                               '\\imagem_software.jpg')
+        if getattr(sys, 'frozen', False):
+            # Se o script estiver congelado (executando como executável)
+            image_path = os.path.join(os.path.dirname(sys.executable), 'imagem_software.jpg')
+        else:
+            # Se o script estiver sendo executado diretamente
+            image_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'dist', 'imagem_software.jpg')
         header_image = Image.open(image_path)
         header_image = ImageTk.PhotoImage(header_image)
 
