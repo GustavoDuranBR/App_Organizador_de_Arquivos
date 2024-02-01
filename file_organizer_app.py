@@ -1,7 +1,6 @@
 import os
 from tkinter import ttk, filedialog, messagebox
 import tkinter as tk
-from themed_file_organizer_app import *
 from PIL import Image, ImageTk
 import shutil
 from progress_bar_window import ProgressBarWindow
