@@ -30,7 +30,7 @@ class FileOrganizerApp:
         self.documents_folder = os.path.join(os.path.expanduser("~"), "Documents", "Organizer")
         os.makedirs(self.documents_folder, exist_ok=True)
 
-        self.QR_CODE_PATH = "D:\\PYTHON_PROJETOS\\App_Organizador_de_Arquivos\\dist\\NuBank2.png"
+        self.QR_CODE_PATH = "dist/NuBank2.png"
         self.selected_file_type = tk.StringVar()
         self.name_part_var = tk.StringVar()
         self.source_folder_var = tk.StringVar()
