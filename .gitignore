@@ -1,5 +1,7 @@
 organizador_de_arquivos.py
 themed_file_organizer_app.py
-file_organizer_app.spec
 pyoxidizer_config.toml
 .idea
+build
+venv
+file_organizer_app.spec
