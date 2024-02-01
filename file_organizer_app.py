@@ -235,29 +235,47 @@ class FileOrganizerApp:
                 dest_path = os.path.join(dest_folder, filename)
 
                 if os.path.isdir(source_path):
-                    # Se for um diretório, use copytree
-                    try:
-                        shutil.copytree(source_path, dest_path)
-                    except Exception as e:
-                        tk.messagebox.showerror("Erro", f"Erro ao copiar o diretório: {str(e)}")
+                    if action == "Copy":
+                        # Se for um diretório e a ação for "Copy", use copytree
+                        try:
+                            shutil.copytree(source_path, dest_path)
+                        except Exception as e:
+                            tk.messagebox.showerror("Erro", f"Erro ao copiar o diretório: {str(e)}")
+                    elif action == "Move":
+                        # Se for um diretório e a ação for "Move", use move
+                        try:
+                            shutil.move(source_path, dest_path)
+                        except Exception as e:
+                            tk.messagebox.showerror("Erro", f"Erro ao mover o diretório: {str(e)}")
                 else:
-                    # Se for um arquivo, use copy2
-                    try:
-                        shutil.copy2(source_path, dest_path)
-                    except PermissionError as pe:
-                        tk.messagebox.showerror("Erro de Permissão", f"Erro de permissão: {str(pe)}")
-                    except Exception as e:
-                        tk.messagebox.showerror("Erro", f"Erro ao copiar o arquivo: {str(e)}")
+                    if action == "Copy":
+                        # Se for um arquivo e a ação for "Copy", use copy2
+                        try:
+                            shutil.copy2(source_path, dest_path)
+                        except PermissionError as pe:
+                            tk.messagebox.showerror("Erro de Permissão", f"Erro de permissão: {str(pe)}")
+                        except Exception as e:
+                            tk.messagebox.showerror("Erro", f"Erro ao copiar o arquivo: {str(e)}")
+                    elif action == "Move":
+                        # Se for um arquivo e a ação for "Move", use move
+                        try:
+                            shutil.move(source_path, dest_path)
+                        except PermissionError as pe:
+                            tk.messagebox.showerror("Erro de Permissão", f"Erro de permissão: {str(pe)}")
+                        except Exception as e:
+                            tk.messagebox.showerror("Erro", f"Erro ao mover o arquivo: {str(e)}")
 
                 self.progress_window.update_progress(i)
 
             tk.messagebox.showinfo("Concluído", f"Arquivos {action.lower()}ados com sucesso.")
+        except Exception as e:
+            tk.messagebox.showerror("Erro", f"Erro ao organizar os arquivos: {str(e)}")
         finally:
             if self.progress_window:
                 self.progress_window.destroy_window()
             self.organizing_in_progress = False
 
-        # Adicione a ação à lista de histórico
+            # Adicione a ação à lista de histórico
         self.actions_history.append({
             "action": action,
             "files_to_organize": files_to_organize,
