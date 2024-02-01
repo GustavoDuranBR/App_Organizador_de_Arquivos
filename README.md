@@ -39,4 +39,4 @@ Sinta-se à vontade para contribuir! Veja nosso [guia de contribuição](CONTRIB
 
 ## Problemas e Melhorias
 
-Encontrou um bug ou quer sugerir uma melhoria? Por favor, [abra uma issue](https://github.com/GustavoDuranBR/seu-repositorio/issues).
+Encontrou um bug ou quer sugerir uma melhoria? Por favor, [abra uma issue](https://github.com/GustavoDuranBR/App_Organizador_de_Arquivos/issues).
