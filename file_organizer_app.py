@@ -287,4 +287,3 @@ if __name__ == "__main__":
     root = ThemedTk(theme="blue")
     app = FileOrganizerApp(root)
     root.mainloop()
-
