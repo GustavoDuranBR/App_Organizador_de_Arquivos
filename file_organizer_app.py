@@ -36,7 +36,7 @@ class FileOrganizerApp:
             self.QR_CODE_PATH = os.path.join(os.path.dirname(sys.executable), 'NuBank.png')
         else:
             # Se o script estiver sendo executado diretamente
-            self.QR_CODE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'dist', 'NuBank.png')
+            self.QR_CODE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'imagens', 'NuBank.png')
         self.selected_file_type = tk.StringVar()
         self.name_part_var = tk.StringVar()
         self.source_folder_var = tk.StringVar()
@@ -68,7 +68,7 @@ class FileOrganizerApp:
             image_path = os.path.join(os.path.dirname(sys.executable), 'imagem_software.jpg')
         else:
             # Se o script estiver sendo executado diretamente
-            image_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'dist', 'imagem_software.jpg')
+            image_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'imagens', 'imagem_software.jpg')
         header_image = Image.open(image_path)
         header_image = ImageTk.PhotoImage(header_image)
 
