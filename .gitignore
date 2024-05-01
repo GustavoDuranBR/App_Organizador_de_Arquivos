@@ -1,7 +1,8 @@
-organizador_de_arquivos.py
-themed_file_organizer_app.py
-pyoxidizer_config.toml
-.idea
-build
-venv
+.idea/
+build/
+.venv/
+venv/
 file_organizer_app.spec
+dist/
+imagens/
+_pycache_/
