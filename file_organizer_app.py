@@ -198,7 +198,7 @@ class FileOrganizerApp:
             return
 
         if not file_type:
-            dest_folder = os.path.join(dest_folder, f"Organizado_{name_part}")
+            dest_folder = os.path.join(dest_folder, f"Organizado {name_part}")
             os.makedirs(dest_folder, exist_ok=True)
             files_to_organize = [filename for filename in os.listdir(source_folder) if name_part in filename]
 
@@ -267,7 +267,7 @@ class FileOrganizerApp:
 
                 self.progress_window.update_progress(i)
 
-            tk.messagebox.showinfo("Concluído", f"Os arquivos foram oganizados com sucesso.")
+            tk.messagebox.showinfo("Concluído", f"Os arquivos foram organizados com sucesso.")
         except Exception as e:
             tk.messagebox.showerror("Erro", f"Erro ao organizar os arquivos: {str(e)}")
         finally:
