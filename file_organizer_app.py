@@ -44,7 +44,7 @@ class FileOrganizerApp:
 
         self.qr_code_photo: tk.PhotoImage = self.resize_qr_code(self.QR_CODE_PATH)
 
-        self.selected_action = tk.StringVar(value="Copy")
+        self.selected_action = tk.StringVar(value="Copiar")
         self.organizing_in_progress = False
         self.progress_window = None
 
@@ -235,13 +235,13 @@ class FileOrganizerApp:
                 dest_path = os.path.join(dest_folder, filename)
 
                 if os.path.isdir(source_path):
-                    if action == "Copy":
+                    if action == "Copiar":
                         # Se for um diretório e a ação for "Copy", use copytree
                         try:
                             shutil.copytree(source_path, dest_path)
                         except Exception as e:
                             tk.messagebox.showerror("Erro", f"Erro ao copiar o diretório: {str(e)}")
-                    elif action == "Move":
+                    elif action == "Mover":
                         # Se for um diretório e a ação for "Move", use move
                         try:
                             shutil.move(source_path, dest_path)
