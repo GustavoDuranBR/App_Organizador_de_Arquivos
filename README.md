@@ -12,6 +12,10 @@ O Organizador de Arquivos é uma aplicação para organizar arquivos em pastas d
 - **Organização por Parte do Nome:** Agrupe arquivos contendo uma determinada parte do nome e mova-os para uma pasta específica.
 - **Histórico de Ações:** Mantenha um registro das ações de organização realizadas.
 
+### Demonstração
+
+![Demonstração do Organizador de Arquivos](https://github.com/GustavoDuranBR/App_Organizador_de_Arquivos/assets/81047389/058b2f7a-0347-43d9-ba91-b1dd957d53a0)
+
 ### 🛠️ Instalação 🛠️ 
 
 #### Requisitos
