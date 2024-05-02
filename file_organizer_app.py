@@ -33,7 +33,7 @@ class FileOrganizerApp:
 
         if getattr(sys, 'frozen', False):
             # Se o script estiver congelado (executando como executável)
-            self.QR_CODE_PATH = os.path.join(os.path.dirname(sys.executable), 'NuBank.png')
+            self.QR_CODE_PATH = os.path.join(os.path.dirname(sys.executable), '_internal/imagens', 'NuBank.png')
         else:
             # Se o script estiver sendo executado diretamente
             self.QR_CODE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'imagens', 'NuBank.png')
@@ -65,7 +65,7 @@ class FileOrganizerApp:
         # Carregar a imagem
         if getattr(sys, 'frozen', False):
             # Se o script estiver congelado (executando como executável)
-            image_path = os.path.join(os.path.dirname(sys.executable), 'imagem_software.jpg')
+            image_path = os.path.join(os.path.dirname(sys.executable), '_internal/imagens','imagem_software.jpg')
         else:
             # Se o script estiver sendo executado diretamente
             image_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'imagens', 'imagem_software.jpg')

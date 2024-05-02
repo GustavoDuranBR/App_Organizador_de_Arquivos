@@ -1,8 +1,7 @@
-.idea
-build
-.venv
-venv
+.idea/
+_pycache_/
+build/
+dist/
+Output/
+venv/
 file_organizer_app.spec
-dist
-imagens
-_pycache_
