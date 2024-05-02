@@ -24,6 +24,10 @@ class FileOrganizerApp:
         self.source_folder_on_close = None
         self.dest_folder_on_close = None
 
+        # Adicione o atributo selection_type à classe
+        self.selection_type_acao = tk.StringVar(value="Copy")
+        self.selection_type_selecao = tk.StringVar(value="Ambos")
+
         # Associar a função ao evento de fechamento
         tk_root.protocol("WM_DELETE_WINDOW", self.on_close)
 
@@ -37,6 +41,7 @@ class FileOrganizerApp:
         else:
             # Se o script estiver sendo executado diretamente
             self.QR_CODE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'imagens', 'NuBank.png')
+
         self.selected_file_type = tk.StringVar()
         self.name_part_var = tk.StringVar()
         self.source_folder_var = tk.StringVar()
@@ -81,7 +86,8 @@ class FileOrganizerApp:
         frame = ttk.LabelFrame(self.root, text="Opções de Arquivo", padding=(8, 3))
         frame.pack(pady=0, padx=10, fill="both", expand=True)
 
-        self.create_combobox(frame, "Ação:", ["Copy", "Move"], self.selected_action)
+        self.create_combobox(frame, "Seleção:", ["Extensão", "Parte do Nome", "Ambos"], self.selection_type_selecao)  # Adicione uma opção para selecionar apenas a extensão, parte do nome ou ambos
+        self.create_combobox(frame, "Ação:", ["Copy", "Move"], self.selection_type_acao)
         self.create_combobox(frame, "Tipo de Arquivo:", ["", "avi", "docx", "dwg", "exe", "jpg", "json",
                                                          "mp3", "mp4", "pdf", "png", "txt", "xlsx", "xml", "zip"],
                              self.selected_file_type)
@@ -125,7 +131,7 @@ class FileOrganizerApp:
         frame.pack_configure(pady=0)
 
     def create_footer(self):
-        footer_label = tk.Label(self.root, text="Developed by: Gustavo Duran - Version: 2.0", font=("Helvetica", 11))
+        footer_label = tk.Label(self.root, text="Developed by: Gustavo Duran - Version: 2.2", font=("Helvetica", 11))
         footer_label.pack(side="bottom", pady=0)
 
     def create_combobox(self, parent, label_text, values, variable):
@@ -187,45 +193,66 @@ class FileOrganizerApp:
             tk.messagebox.showwarning("Aviso", "A organização já está em andamento.")
             return
 
+        selection_type_acao = self.selection_type_acao.get()  # Obtenha a seleção do usuário (Copy ou Move)
+        selection_type_selecao = self.selection_type_selecao.get()  # Obtenha a seleção do usuário (Extensão, Parte do Nome ou Ambos)
         file_type = self.selected_file_type.get().lower()
         name_part = self.name_part_var.get()
         source_folder = self.source_folder_var.get()
         dest_folder = self.destination_folder_var.get()
         action = self.selected_action.get()
 
-        if not file_type and not name_part:
-            tk.messagebox.showerror("Erro", "Especifique pelo menos o tipo de arquivo ou a parte do nome.")
+        if selection_type_selecao == "Extensão" and not file_type:  # Verifique se o usuário selecionou apenas a extensão, mas não forneceu uma extensão
+            tk.messagebox.showerror("Erro", "Selecione o tipo de arquivo.")
             return
 
-        if not file_type:
-            dest_folder = os.path.join(dest_folder, f"Organizado {name_part}")
-            os.makedirs(dest_folder, exist_ok=True)
-            files_to_organize = [filename for filename in os.listdir(source_folder) if name_part in filename]
+        if selection_type_selecao == "Parte do Nome" and not name_part:  # Verifique se o usuário selecionou apenas parte do nome, mas não forneceu uma parte do nome
+            tk.messagebox.showerror("Erro", "Digite a parte do nome.")
+            return
 
-            if not files_to_organize:
-                tk.messagebox.showwarning("Aviso",
-                                          f"Nenhum arquivo encontrado com a parte do nome '{name_part}'. Verifique o "
-                                          f"nome e tente novamente.")
-                return
-        else:
-            if not name_part and file_type != "Organizado":
-                tk.messagebox.showerror("Erro", "Preencha o campo 'Parte do Nome'.")
-                return
-
-            dest_folder = os.path.join(dest_folder, f"{name_part}_{file_type}")
-            os.makedirs(dest_folder, exist_ok=True)
-            files_to_organize = [filename for filename in os.listdir(source_folder) if
-                                 file_type in filename and name_part in filename]
-
-            if not files_to_organize:
-                tk.messagebox.showwarning("Aviso",
-                                          f"Nenhum arquivo encontrado com a parte do nome '{name_part}' e tipo de "
-                                          f"arquivo '{file_type}'. Verifique os campos e tente novamente.")
-                return
+        if selection_type_selecao == "Ambos" and not file_type and not name_part:  # Verifique se o usuário selecionou ambos, mas não forneceu nem a extensão nem a parte do nome
+            tk.messagebox.showerror("Erro", "Especifique pelo menos o tipo de arquivo ou a parte do nome.")
+            return
 
         self.organizing_in_progress = True
 
         try:
+            if selection_type_selecao == "Extensão" and not name_part:
+                # Se a seleção for feita apenas por extensão e não houver parte do nome especificada
+                dest_folder = os.path.join(dest_folder, f"Organizado_{file_type}")
+                os.makedirs(dest_folder, exist_ok=True)
+                files_to_organize = [filename for filename in os.listdir(source_folder) if filename.lower().endswith(f".{file_type}")]
+            else:
+                # Caso contrário, faça como antes
+                if not file_type and not name_part:
+                    tk.messagebox.showerror("Erro", "Especifique pelo menos o tipo de arquivo ou a parte do nome.")
+                    return
+
+                if not file_type:
+                    dest_folder = os.path.join(dest_folder, f"Organizado {name_part}")
+                    os.makedirs(dest_folder, exist_ok=True)
+                    files_to_organize = [filename for filename in os.listdir(source_folder) if name_part in filename]
+
+                    if not files_to_organize:
+                        tk.messagebox.showwarning("Aviso",
+                                                f"Nenhum arquivo encontrado com a parte do nome '{name_part}'. Verifique o "
+                                                f"nome e tente novamente.")
+                        return
+                else:
+                    if not name_part and file_type != "Organizado":
+                        tk.messagebox.showerror("Erro", "Preencha o campo 'Parte do Nome'.")
+                        return
+
+                    dest_folder = os.path.join(dest_folder, f"{name_part}_{file_type}")
+                    os.makedirs(dest_folder, exist_ok=True)
+                    files_to_organize = [filename for filename in os.listdir(source_folder) if
+                                        file_type in filename and name_part in filename]
+
+                    if not files_to_organize:
+                        tk.messagebox.showwarning("Aviso",
+                                                f"Nenhum arquivo encontrado com a parte do nome '{name_part}' e tipo de "
+                                                f"arquivo '{file_type}'. Verifique os campos e tente novamente.")
+                        return
+
             total_files = len(files_to_organize)
             self.progress_window = ProgressBarWindow(self.root, total_files)
             self.root.update_idletasks()
@@ -265,7 +292,8 @@ class FileOrganizerApp:
                         except Exception as e:
                             tk.messagebox.showerror("Erro", f"Erro ao mover o arquivo: {str(e)}")
 
-                self.progress_window.update_progress(i)
+                self.progress_window.update_progress
+
 
             tk.messagebox.showinfo("Concluído", f"Os arquivos foram organizados com sucesso.")
         except Exception as e:
