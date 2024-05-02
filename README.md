@@ -31,7 +31,6 @@ O Organizador de Arquivos é uma aplicação para organizar arquivos em pastas d
 ### Demonstração
 
 ![Demonstração do Organizador de Arquivos](https://github.com/GustavoDuranBR/App_Organizador_de_Arquivos/assets/81047389/6b0a4c2e-3310-496a-aceb-0c134613d5d0)
-)
 
 ### 🛠️ Instalação 🛠️ 
 
