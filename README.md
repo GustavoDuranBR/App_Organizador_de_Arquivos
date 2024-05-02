@@ -8,13 +8,30 @@ O Organizador de Arquivos é uma aplicação para organizar arquivos em pastas d
 
 ### Funcionalidades
 
-- **Organização por Tipo de Arquivo:** Organize arquivos com base em seu tipo, movendo-os para pastas específicas.
-- **Organização por Parte do Nome:** Agrupe arquivos contendo uma determinada parte do nome e mova-os para uma pasta específica.
-- **Histórico de Ações:** Mantenha um registro das ações de organização realizadas.
+- **Seleção de Arquivos:** Escolha entre diferentes critérios de seleção, como Extensão, Parte do Nome ou Ambos, para organizar seus arquivos de maneira eficiente.
+  **Exemplo:**
+  - Selecione "Extensão" para organizar arquivos com base em sua extensão.
+  - Selecione "Parte do Nome" para agrupar arquivos contendo uma determinada parte do nome.
+  - Selecione "Ambos" para combinar ambas as opções e refinar ainda mais a organização.
+
+- **Ação:** Escolha entre "Copy" (Copiar) ou "Move" (Mover) para especificar como deseja organizar os arquivos selecionados.
+  **Exemplo:**
+  - Selecione "Copy" para copiar os arquivos selecionados para a pasta de destino.
+  - Selecione "Move" para mover os arquivos selecionados para a pasta de destino.
+
+- **Tipo de Arquivo:** Selecione o tipo de arquivo que deseja organizar, como .txt, .jpg, .pdf, etc.
+  **Exemplo:**
+  - Selecione ".txt" para organizar apenas arquivos de texto.
+  - Selecione ".jpg" para organizar apenas imagens JPEG.
+
+- **Parte do Nome:** Digite uma parte do nome para agrupar arquivos que contenham essa parte específica no nome.
+  **Exemplo:**
+  - Digite "relatório" para agrupar arquivos que tenham "relatório" em seu nome.
 
 ### Demonstração
 
-![Demonstração do Organizador de Arquivos](https://github.com/GustavoDuranBR/App_Organizador_de_Arquivos/assets/81047389/058b2f7a-0347-43d9-ba91-b1dd957d53a0)
+![Demonstração do Organizador de Arquivos](https://github.com/GustavoDuranBR/App_Organizador_de_Arquivos/assets/81047389/6b0a4c2e-3310-496a-aceb-0c134613d5d0)
+)
 
 ### 🛠️ Instalação 🛠️ 
 
