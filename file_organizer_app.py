@@ -81,7 +81,7 @@ class FileOrganizerApp:
         frame = ttk.LabelFrame(self.root, text="Opções de Arquivo", padding=(8, 3))
         frame.pack(pady=0, padx=10, fill="both", expand=True)
 
-        self.create_combobox(frame, "Ação:", ["Copy", "Move"], self.selected_action)
+        self.create_combobox(frame, "Ação:", ["Copiar", "Mover"], self.selected_action)
         self.create_combobox(frame, "Tipo de Arquivo:", ["", "avi", "docx", "dwg", "exe", "jpg", "json",
                                                          "mp3", "mp4", "pdf", "png", "txt", "xlsx", "xml", "zip"],
                              self.selected_file_type)
@@ -248,7 +248,7 @@ class FileOrganizerApp:
                         except Exception as e:
                             tk.messagebox.showerror("Erro", f"Erro ao mover o diretório: {str(e)}")
                 else:
-                    if action == "Copy":
+                    if action == "Copiar":
                         # Se for um arquivo e a ação for "Copy", use copy2
                         try:
                             shutil.copy2(source_path, dest_path)
@@ -256,7 +256,7 @@ class FileOrganizerApp:
                             tk.messagebox.showerror("Erro de Permissão", f"Erro de permissão: {str(pe)}")
                         except Exception as e:
                             tk.messagebox.showerror("Erro", f"Erro ao copiar o arquivo: {str(e)}")
-                    elif action == "Move":
+                    elif action == "Mover":
                         # Se for um arquivo e a ação for "Move", use move
                         try:
                             shutil.move(source_path, dest_path)
@@ -267,7 +267,7 @@ class FileOrganizerApp:
 
                 self.progress_window.update_progress(i)
 
-            tk.messagebox.showinfo("Concluído", f"Arquivos {action.lower()}ados com sucesso.")
+            tk.messagebox.showinfo("Concluído", f"Os arquivos foram organizados com sucesso.")
         except Exception as e:
             tk.messagebox.showerror("Erro", f"Erro ao organizar os arquivos: {str(e)}")
         finally:
