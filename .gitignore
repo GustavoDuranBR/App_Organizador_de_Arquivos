@@ -3,5 +3,5 @@ _pycache_/
 build/
 dist/
 Output/
-venv/
+.venv/
 file_organizer_app.spec
