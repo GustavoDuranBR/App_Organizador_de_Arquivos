@@ -44,7 +44,7 @@ class FileOrganizerApp:
 
         self.qr_code_photo: tk.PhotoImage = self.resize_qr_code(self.QR_CODE_PATH)
 
-        self.selected_action = tk.StringVar(value="Copiar")
+        self.selected_action = tk.StringVar(value="Copy")
         self.organizing_in_progress = False
         self.progress_window = None
 
@@ -81,7 +81,7 @@ class FileOrganizerApp:
         frame = ttk.LabelFrame(self.root, text="Opções de Arquivo", padding=(8, 3))
         frame.pack(pady=0, padx=10, fill="both", expand=True)
 
-        self.create_combobox(frame, "Ação:", ["Copiar", "Mover"], self.selected_action)
+        self.create_combobox(frame, "Ação:", ["Copy", "Move"], self.selected_action)
         self.create_combobox(frame, "Tipo de Arquivo:", ["", "avi", "docx", "dwg", "exe", "jpg", "json",
                                                          "mp3", "mp4", "pdf", "png", "txt", "xlsx", "xml", "zip"],
                              self.selected_file_type)
@@ -187,7 +187,7 @@ class FileOrganizerApp:
             tk.messagebox.showwarning("Aviso", "A organização já está em andamento.")
             return
 
-        file_type = self.selected_file_type.get()
+        file_type = self.selected_file_type.get().lower()
         name_part = self.name_part_var.get()
         source_folder = self.source_folder_var.get()
         dest_folder = self.destination_folder_var.get()
@@ -235,20 +235,20 @@ class FileOrganizerApp:
                 dest_path = os.path.join(dest_folder, filename)
 
                 if os.path.isdir(source_path):
-                    if action == "Copiar":
+                    if action == "Copy":
                         # Se for um diretório e a ação for "Copy", use copytree
                         try:
                             shutil.copytree(source_path, dest_path)
                         except Exception as e:
                             tk.messagebox.showerror("Erro", f"Erro ao copiar o diretório: {str(e)}")
-                    elif action == "Mover":
+                    elif action == "Move":
                         # Se for um diretório e a ação for "Move", use move
                         try:
                             shutil.move(source_path, dest_path)
                         except Exception as e:
                             tk.messagebox.showerror("Erro", f"Erro ao mover o diretório: {str(e)}")
                 else:
-                    if action == "Copiar":
+                    if action == "Copy":
                         # Se for um arquivo e a ação for "Copy", use copy2
                         try:
                             shutil.copy2(source_path, dest_path)
@@ -256,7 +256,7 @@ class FileOrganizerApp:
                             tk.messagebox.showerror("Erro de Permissão", f"Erro de permissão: {str(pe)}")
                         except Exception as e:
                             tk.messagebox.showerror("Erro", f"Erro ao copiar o arquivo: {str(e)}")
-                    elif action == "Mover":
+                    elif action == "Move":
                         # Se for um arquivo e a ação for "Move", use move
                         try:
                             shutil.move(source_path, dest_path)
@@ -267,7 +267,7 @@ class FileOrganizerApp:
 
                 self.progress_window.update_progress(i)
 
-            tk.messagebox.showinfo("Concluído", f"Os arquivos foram organizados com sucesso.")
+            tk.messagebox.showinfo("Concluído", f"Os arquivos foram oganizados com sucesso.")
         except Exception as e:
             tk.messagebox.showerror("Erro", f"Erro ao organizar os arquivos: {str(e)}")
         finally:
