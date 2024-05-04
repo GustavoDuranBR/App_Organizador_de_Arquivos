@@ -8,7 +8,6 @@ from progress_bar_window import ProgressBarWindow
 from ttkthemes import ThemedTk
 from datetime import datetime
 
-
 class FileOrganizerApp:
     def __init__(self, tk_root: tk.Tk):
         self.root = tk_root
@@ -49,7 +48,6 @@ class FileOrganizerApp:
 
         self.qr_code_photo: tk.PhotoImage = self.resize_qr_code(self.QR_CODE_PATH)
 
-        self.selected_action = tk.StringVar(value="Copy")
         self.organizing_in_progress = False
         self.progress_window = None
 
@@ -105,21 +103,19 @@ class FileOrganizerApp:
 
     def create_action_button(self):
         frame = ttk.LabelFrame(self.root, padding=(0, 0))
-        frame.pack(pady=0, padx=10, fill="both", expand=True)
 
         # Use ttk.Button dentro do frame
-        organize_button = ttk.Button(frame, text="Organizar", command=self.organize_files,
-                                     style="TButton",  # Utiliza o estilo padrão do tema
-                                     cursor="hand2",  # Cursor de mão ao passar sobre o botão
-                                     )
-
+        organize_button = ttk.Button(frame, text="  Organizar", command=self.organize_files,
+                                    cursor="hand2",  # Cursor de mão ao passar sobre o botão
+                                    style="Custom.TButton")  # Estilo personalizado para o botão
         # Adicione um estilo para bordas arredondadas
         self.root.style = ttk.Style()
-        self.root.style.configure("TButton", padding=0,
-                                  relief="flat", borderwidth=0,
-                                  font=("Helvetica", 12, "bold"))
-        organize_button.pack(pady=0)
-        frame.pack_configure(pady=0)
+        self.root.style.configure("Custom.TButton", padding=10,
+                                relief="flat", borderwidth=0,
+                                font=("Helvetica", 16, "bold"), foreground="#001f3f")
+        organize_button.pack(pady=10, padx=10, ipadx=20)  # Ajuste o preenchimento interno e externo
+
+        frame.pack_configure(pady=0, padx=10, fill="both", expand=True)
 
     def create_donation_section(self):
         frame = ttk.LabelFrame(self.root, text="Doação", padding=(10, 10))
@@ -131,7 +127,7 @@ class FileOrganizerApp:
         frame.pack_configure(pady=0)
 
     def create_footer(self):
-        footer_label = tk.Label(self.root, text="Developed by: Gustavo Duran - Version: 2.2", font=("Helvetica", 11))
+        footer_label = tk.Label(self.root, text="Developed by: Gustavo Duran - Version: 2.3", font=("Helvetica", 11))
         footer_label.pack(side="bottom", pady=0)
 
     def create_combobox(self, parent, label_text, values, variable):
@@ -149,14 +145,16 @@ class FileOrganizerApp:
         entry.grid(row=len(parent.grid_slaves()) - 1, column=11, pady=0, padx=5, sticky="w")
 
     def create_folder_entry(self, parent, label_text, variable, browse_command):
+        row_index = len(parent.grid_slaves()) // 2  # calcula o índice da linha dividindo pela metade
         label = tk.Label(parent, text=label_text, font=("Helvetica", 11))
-        label.grid(row=len(parent.grid_slaves()), column=10, pady=0, padx=5, sticky="w")
+        label.grid(row=row_index, column=0, pady=0, padx=5, sticky="w")
 
-        entry = tk.Entry(parent, textvariable=variable)
-        entry.grid(row=len(parent.grid_slaves()) - 1, column=11, pady=1, padx=5, sticky="w")
+        entry = tk.Entry(parent, textvariable=variable, width=40)
+        entry.grid(row=row_index, column=1, pady=0, padx=5, sticky="w")
 
-        button = tk.Button(parent, text="Selecionar Pasta", command=browse_command)
-        button.grid(row=len(parent.grid_slaves()) - 1, column=12, pady=1, padx=5, sticky="w")
+        # Crie o botão "Selecionar Pasta" com o mesmo estilo personalizado
+        select_folder_button = ttk.Button(parent, text="Selecionar Pasta", command=browse_command)
+        select_folder_button.grid(row=row_index, column=2, pady=0, padx=5, sticky="w")
 
     def create_qr_code(self, parent):
         donation_label = tk.Label(parent, text="Doações são bem-vindas!", font=("Helvetica", 11))
@@ -190,27 +188,26 @@ class FileOrganizerApp:
 
     def organize_files(self):
         if self.organizing_in_progress:
-            tk.messagebox.showwarning("Aviso", "A organização já está em andamento.")
+            messagebox.showwarning("Aviso", "A organização já está em andamento.")
             return
 
-        selection_type_acao = self.selection_type_acao.get()  # Obtenha a seleção do usuário (Copy ou Move)
+        selected_action = self.selection_type_acao.get()  # Obtenha a seleção do usuário (Copy ou Move)
         selection_type_selecao = self.selection_type_selecao.get()  # Obtenha a seleção do usuário (Extensão, Parte do Nome ou Ambos)
         file_type = self.selected_file_type.get().lower()
         name_part = self.name_part_var.get()
         source_folder = self.source_folder_var.get()
         dest_folder = self.destination_folder_var.get()
-        action = self.selected_action.get()
 
         if selection_type_selecao == "Extensão" and not file_type:  # Verifique se o usuário selecionou apenas a extensão, mas não forneceu uma extensão
-            tk.messagebox.showerror("Erro", "Selecione o tipo de arquivo.")
+            messagebox.showerror("Erro", "Selecione o tipo de arquivo.")
             return
 
         if selection_type_selecao == "Parte do Nome" and not name_part:  # Verifique se o usuário selecionou apenas parte do nome, mas não forneceu uma parte do nome
-            tk.messagebox.showerror("Erro", "Digite a parte do nome.")
+            messagebox.showerror("Erro", "Digite a parte do nome.")
             return
 
         if selection_type_selecao == "Ambos" and not file_type and not name_part:  # Verifique se o usuário selecionou ambos, mas não forneceu nem a extensão nem a parte do nome
-            tk.messagebox.showerror("Erro", "Especifique pelo menos o tipo de arquivo ou a parte do nome.")
+            messagebox.showerror("Erro", "Especifique pelo menos o tipo de arquivo ou a parte do nome.")
             return
 
         self.organizing_in_progress = True
@@ -224,7 +221,7 @@ class FileOrganizerApp:
             else:
                 # Caso contrário, faça como antes
                 if not file_type and not name_part:
-                    tk.messagebox.showerror("Erro", "Especifique pelo menos o tipo de arquivo ou a parte do nome.")
+                    messagebox.showerror("Erro", "Especifique pelo menos o tipo de arquivo ou a parte do nome.")
                     return
 
                 if not file_type:
@@ -233,13 +230,13 @@ class FileOrganizerApp:
                     files_to_organize = [filename for filename in os.listdir(source_folder) if name_part in filename]
 
                     if not files_to_organize:
-                        tk.messagebox.showwarning("Aviso",
+                        messagebox.showwarning("Aviso",
                                                 f"Nenhum arquivo encontrado com a parte do nome '{name_part}'. Verifique o "
                                                 f"nome e tente novamente.")
                         return
                 else:
                     if not name_part and file_type != "Organizado":
-                        tk.messagebox.showerror("Erro", "Preencha o campo 'Parte do Nome'.")
+                        messagebox.showerror("Erro", "Preencha o campo 'Parte do Nome'.")
                         return
 
                     dest_folder = os.path.join(dest_folder, f"{name_part}_{file_type}")
@@ -248,7 +245,7 @@ class FileOrganizerApp:
                                         file_type in filename and name_part in filename]
 
                     if not files_to_organize:
-                        tk.messagebox.showwarning("Aviso",
+                        messagebox.showwarning("Aviso",
                                                 f"Nenhum arquivo encontrado com a parte do nome '{name_part}' e tipo de "
                                                 f"arquivo '{file_type}'. Verifique os campos e tente novamente.")
                         return
@@ -262,42 +259,41 @@ class FileOrganizerApp:
                 dest_path = os.path.join(dest_folder, filename)
 
                 if os.path.isdir(source_path):
-                    if action == "Copy":
+                    if selected_action == "Copy":
                         # Se for um diretório e a ação for "Copy", use copytree
                         try:
                             shutil.copytree(source_path, dest_path)
                         except Exception as e:
-                            tk.messagebox.showerror("Erro", f"Erro ao copiar o diretório: {str(e)}")
-                    elif action == "Move":
+                            messagebox.showerror("Erro", f"Erro ao copiar o diretório: {str(e)}")
+                    elif selected_action == "Move":
                         # Se for um diretório e a ação for "Move", use move
                         try:
                             shutil.move(source_path, dest_path)
                         except Exception as e:
-                            tk.messagebox.showerror("Erro", f"Erro ao mover o diretório: {str(e)}")
+                            messagebox.showerror("Erro", f"Erro ao mover o diretório: {str(e)}")
                 else:
-                    if action == "Copy":
+                    if selected_action == "Copy":
                         # Se for um arquivo e a ação for "Copy", use copy2
                         try:
                             shutil.copy2(source_path, dest_path)
                         except PermissionError as pe:
-                            tk.messagebox.showerror("Erro de Permissão", f"Erro de permissão: {str(pe)}")
+                            messagebox.showerror("Erro de Permissão", f"Erro de permissão: {str(pe)}")
                         except Exception as e:
-                            tk.messagebox.showerror("Erro", f"Erro ao copiar o arquivo: {str(e)}")
-                    elif action == "Move":
+                            messagebox.showerror("Erro", f"Erro ao copiar o arquivo: {str(e)}")
+                    elif selected_action == "Move":
                         # Se for um arquivo e a ação for "Move", use move
                         try:
                             shutil.move(source_path, dest_path)
                         except PermissionError as pe:
-                            tk.messagebox.showerror("Erro de Permissão", f"Erro de permissão: {str(pe)}")
+                            messagebox.showerror("Erro de Permissão", f"Erro de permissão: {str(pe)}")
                         except Exception as e:
-                            tk.messagebox.showerror("Erro", f"Erro ao mover o arquivo: {str(e)}")
+                            messagebox.showerror("Erro", f"Erro ao mover o arquivo: {str(e)}")
 
-                self.progress_window.update_progress
+                self.progress_window.update_progress(current_file=i)
 
-
-            tk.messagebox.showinfo("Concluído", f"Os arquivos foram organizados com sucesso.")
+            messagebox.showinfo("Concluído", f"Os arquivos foram organizados com sucesso.")
         except Exception as e:
-            tk.messagebox.showerror("Erro", f"Erro ao organizar os arquivos: {str(e)}")
+            messagebox.showerror("Erro", f"Erro ao organizar os arquivos: {str(e)}")
         finally:
             if self.progress_window:
                 self.progress_window.destroy_window()
@@ -305,7 +301,7 @@ class FileOrganizerApp:
 
             # Adicione a ação à lista de histórico
         self.actions_history.append({
-            "action": action,
+            "action": selected_action,
             "files_to_organize": files_to_organize,
             "source_folder": source_folder,
             "dest_folder": dest_folder,
@@ -331,15 +327,14 @@ class FileOrganizerApp:
                                        f"Origem: {source_path}\n"
                                        f"Destino: {dest_path}\n\n")
             except Exception as e:
-                tk.messagebox.showerror("Erro", f"Erro ao criar o arquivo de texto: {str(e)}")
+                messagebox.showerror("Erro", f"Erro ao criar o arquivo de texto: {str(e)}")
             else:
-                tk.messagebox.showinfo("Concluído", f"Arquivo de texto criado em:\n{organized_files_txt_path}")
+                messagebox.showinfo("Concluído", f"Arquivo de texto criado em:\n{organized_files_txt_path}")
 
         # Fechar o aplicativo
         self.root.destroy()
 
-
 if __name__ == "__main__":
-    root = ThemedTk(theme="blue")
+    root = ThemedTk(theme="plastik")
     app = FileOrganizerApp(root)
     root.mainloop()
