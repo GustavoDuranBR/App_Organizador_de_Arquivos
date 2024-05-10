@@ -2,6 +2,8 @@
 
 ![Badge em Desenvolvimento](http://img.shields.io/static/v1?label=STATUS&message=EM%20DESENVOLVIMENTO&color=GREEN&style=for-the-badge)
 
+![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
+
 ## Descrição do projeto 
 
 O Organizador de Arquivos é uma aplicação para organizar arquivos em pastas de acordo com diferentes critérios, como tipo de arquivo ou parte do nome.
