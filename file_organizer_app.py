@@ -38,7 +38,7 @@ class SplashScreen:
 class FileOrganizerApp:
     def __init__(self, tk_root: tk.Tk):
         self.root = tk_root
-        self.root.title("Organizador de Arquivos")
+        self.root.title("FileWizard")
         self.root.geometry("600x700")
 
         # Definir o ícone do programa
@@ -395,4 +395,3 @@ if __name__ == "__main__":
     # Esperar o tempo da SplashScreen antes de iniciar a aplicação principal
     root.after(3000, lambda: (root.deiconify(), FileOrganizerApp(root)))
     root.mainloop()
-    
