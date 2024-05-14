@@ -19,7 +19,7 @@ class SplashScreen:
         splash_root = tk.Toplevel(self.root)
         splash_root.overrideredirect(True)  # Remove a borda da janela
         splash_root.geometry("+{}+{}".format(
-            int(self.root.winfo_screenwidth() / 2 - 300),
+            int(self.root.winfo_screenwidth() / 2 - 200),
             int(self.root.winfo_screenheight() / 2 - 200)
         ))
 
@@ -34,23 +34,6 @@ class SplashScreen:
         # Fechar a tela de splash após o tempo de duração
         splash_root.after(self.duration, splash_root.destroy)
 
-def main():
-    root = tk.Tk()
-    root.title("Organizador de Arquivos")
-
-    # Exibir tela de splash por 2 segundos
-    splash_image_path = "imagens/splash_screen.png"
-    duration = 2000
-    if getattr(sys, 'frozen', False):
-        # Se o script estiver congelado (executando como executável)
-        splash_image_path = os.path.join(os.path.dirname(sys.executable), '_internal/imagens', 'splash_screen.png')
-    splash = SplashScreen(root, splash_image_path, duration)
-    splash.show()
-
-    # Carregar a interface principal após o tempo de splash
-    root.after(duration, lambda: FileOrganizerApp(root))
-
-    root.mainloop()
 
 class FileOrganizerApp:
     def __init__(self, tk_root: tk.Tk):
@@ -130,10 +113,10 @@ class FileOrganizerApp:
         # Carregar a imagem
         if getattr(sys, 'frozen', False):
             # Se o script estiver congelado (executando como executável)
-            image_path = os.path.join(os.path.dirname(sys.executable), '_internal/imagens','imagem_software.jpg')
+            image_path = os.path.join(os.path.dirname(sys.executable), '_internal/imagens','imagem_software.png')
         else:
             # Se o script estiver sendo executado diretamente
-            image_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'imagens', 'imagem_software.jpg')
+            image_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'imagens', 'imagem_software.png')
         header_image = Image.open(image_path)
         header_image = ImageTk.PhotoImage(header_image)
 
@@ -188,10 +171,6 @@ class FileOrganizerApp:
         # Reduza o espaço entre o LabelFrame de doação e o rodapé
         frame.pack_configure(pady=0)
 
-    def create_footer(self):
-        footer_label = tk.Label(self.root, text="Developed by: Gustavo Duran - Version: 2.3", font=("Helvetica", 11))
-        footer_label.pack(side="bottom", pady=0)
-
     def create_combobox(self, parent, label_text, values, variable):
         label = tk.Label(parent, text=label_text, font=("Helvetica", 11))
         label.grid(row=len(parent.grid_slaves()), column=10, pady=0, padx=5, sticky="w")
@@ -239,6 +218,10 @@ class FileOrganizerApp:
 
         qr_code_image = qr_code_image.resize((new_width, new_height), Image.LANCZOS)
         return ImageTk.PhotoImage(qr_code_image)
+    
+    def create_footer(self):
+        footer_label = tk.Label(self.root, text="Developed by: Gustavo Duran - Version: 2.4", font=("Helvetica", 11))
+        footer_label.pack(side="bottom", pady=0)
 
     def browse_source_folder(self):
         folder_selected = filedialog.askdirectory()
@@ -398,5 +381,18 @@ class FileOrganizerApp:
 
 if __name__ == "__main__":
     root = ThemedTk(theme="plastik")
-    app = FileOrganizerApp(root)
+    root.withdraw()
+
+    # Mostrar a SplashScreen antes de iniciar a aplicação principal
+    if getattr(sys, 'frozen', False):
+        splash_screen_path = os.path.join(os.path.dirname(sys.executable), '_internal/imagens/splash_screen.png')
+    else:
+        splash_screen_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'imagens/splash_screen.png')
+
+    splash = SplashScreen(root, splash_screen_path, 3000)
+    splash.show()
+
+    # Esperar o tempo da SplashScreen antes de iniciar a aplicação principal
+    root.after(3000, lambda: (root.deiconify(), FileOrganizerApp(root)))
     root.mainloop()
+    
