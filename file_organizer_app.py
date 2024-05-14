@@ -1,18 +1,65 @@
 import os
 import sys
-from tkinter import ttk, filedialog, messagebox
 import tkinter as tk
+from tkinter import ttk, messagebox, filedialog
 from PIL import Image, ImageTk
 import shutil
 from progress_bar_window import ProgressBarWindow
 from ttkthemes import ThemedTk
 from datetime import datetime
 
+
+class SplashScreen:
+    def __init__(self, root, image_path, duration):
+        self.root = root
+        self.image_path = image_path
+        self.duration = duration
+
+    def show(self):
+        splash_root = tk.Toplevel(self.root)
+        splash_root.overrideredirect(True)  # Remove a borda da janela
+        splash_root.geometry("+{}+{}".format(
+            int(self.root.winfo_screenwidth() / 2 - 300),
+            int(self.root.winfo_screenheight() / 2 - 200)
+        ))
+
+        # Carregar e exibir a imagem de splash
+        splash_image = Image.open(self.image_path)
+        splash_image = splash_image.resize((400, 400), Image.ANTIALIAS)
+        photo = ImageTk.PhotoImage(splash_image)
+        splash_label = tk.Label(splash_root, image=photo)
+        splash_label.image = photo
+        splash_label.pack()
+
+        # Fechar a tela de splash após o tempo de duração
+        splash_root.after(self.duration, splash_root.destroy)
+
+def main():
+    root = tk.Tk()
+    root.title("Organizador de Arquivos")
+
+    # Exibir tela de splash por 2 segundos
+    splash_image_path = "imagens/splash_screen.png"
+    duration = 2000
+    if getattr(sys, 'frozen', False):
+        # Se o script estiver congelado (executando como executável)
+        splash_image_path = os.path.join(os.path.dirname(sys.executable), '_internal/imagens', 'splash_screen.png')
+    splash = SplashScreen(root, splash_image_path, duration)
+    splash.show()
+
+    # Carregar a interface principal após o tempo de splash
+    root.after(duration, lambda: FileOrganizerApp(root))
+
+    root.mainloop()
+
 class FileOrganizerApp:
     def __init__(self, tk_root: tk.Tk):
         self.root = tk_root
-        self.root.title("Organizer")
+        self.root.title("Organizador de Arquivos")
         self.root.geometry("600x700")
+
+        # Definir o ícone do programa
+        self.set_window_icon()
 
         # Inicialize a lista de ações
         self.actions_history = []
@@ -52,6 +99,21 @@ class FileOrganizerApp:
         self.progress_window = None
 
         self.create_widgets()
+
+    def set_window_icon(self):
+        # Definir o caminho do ícone
+        if getattr(sys, 'frozen', False):
+            # Se o script estiver congelado (executando como executável)
+            icon_path = os.path.join(os.path.dirname(sys.executable), '_internal/imagens', 'icone.ico')
+        else:
+            # Se o script estiver sendo executado diretamente
+            icon_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'imagens', 'icone.ico')
+
+        # Verificar se o arquivo de ícone existe
+        if os.path.exists(icon_path):
+            self.root.iconbitmap(icon_path)
+        else:
+            print(f"Ícone não encontrado: {icon_path}")
 
     def create_widgets(self):
         self.create_header()
