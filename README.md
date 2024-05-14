@@ -30,7 +30,7 @@ O Organizador de Arquivos é uma aplicação para organizar arquivos em pastas d
   - Digite "relatório" para agrupar arquivos que tenham "relatório" em seu nome.
 
 ### Demonstração
-  <img src="https://github.com/GustavoDuranBR/App_Organizador_de_Arquivos/assets/81047389/23284e39-eb5d-4468-bfdb-26fd583c152b" width="350" alt="Demonstração do Organizador de Arquivos">
+  <img src="https://github.com/GustavoDuranBR/App_Organizador_de_Arquivos/assets/81047389/6e1d258a-0637-4a34-a36e-c016af069365" width="350" alt="Demonstração do Organizador de Arquivos">
 
 ### 🛠️ Instalação 🛠️ 
 
